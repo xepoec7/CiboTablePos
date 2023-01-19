@@ -17,7 +17,6 @@ const OrderComponent = (props) => {
 
     // Function to play notification when new order arrives.
     async function playSound() {
-        console.log("loading sound");
         const {sound} = await Audio.Sound.createAsync
             (require('../assets/notification.wav'));
         setSound(sound);
@@ -25,6 +24,7 @@ const OrderComponent = (props) => {
     }
 
 
+    // Hook for checking changes in order so we can compare with present one and if difference play notifications
     useEffect(() => {
         if (JSON.stringify(orders) !== JSON.stringify(oldOrders)) {
             playSound();
@@ -50,7 +50,6 @@ const OrderComponent = (props) => {
                 .then((res) => {
                     let data = res.data;
                     setOrders(data);
-                    console.log("CHECKING");
                 })
         }, 20000);
         return () => clearInterval(interval);
