@@ -11,17 +11,28 @@ const OrderComponent = (props) => {
     const API = new Api();
     const navigation = useNavigation();
     const isFocused = useIsFocused();
-    const [sound, setSound] = useState();
     const [orders, setOrders] = useState([]);
     const [oldOrders, setOldOrders] = useState([]);
-
+    const [sound, setSound] = useState();
 
     // Function to play notification when new order arrives.
     async function playSound() {
-        const {sound} = Audio.Sound.createAsync(require('../assets/notification.wav'));
+        console.log("loading sound");
+        const {sound} = await Audio.Sound.createAsync
+            (require('../assets/notification.wav'));
         setSound(sound);
-        sound.playSound();
+        sound.playAsync();
     }
+
+
+    useEffect(() => {
+        if (JSON.stringify(orders) !== JSON.stringify(oldOrders)) {
+            playSound();
+            setOldOrders(orders);
+        }
+    }, [props, orders]);
+
+
 
     // Hook for checking orders when screen is in focus.
     useEffect(() => {
@@ -39,14 +50,13 @@ const OrderComponent = (props) => {
                 .then((res) => {
                     let data = res.data;
                     setOrders(data);
-                    if (JSON.stringify(orders) !== JSON.stringify(oldOrders)) {
-                        setOldOrders(orders)
-                        playSound();
-                    }
+                    console.log("CHECKING");
                 })
-        }, 60000);
+        }, 20000);
         return () => clearInterval(interval);
     });
+
+
 
 
     /**
