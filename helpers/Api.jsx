@@ -58,7 +58,7 @@ export default class Api {
 
     // Accept order using primary key 'pk'
     acceptOrder = (pk) => {
-        return this.init().get(`order/accept/${pk}`);
+        return this.init().get(`order/${pk}/accept`);
     };
 
     // Get open invoices
@@ -68,6 +68,6 @@ export default class Api {
 
     // Pay invoice 
     payInvoice = (invoice) => {
-        return this.init().put(`invoice/paidd/${invoice.id}`, invoice);
+        return this.init().put(`invoice/${invoice.id}/paid/`, invoice);
     };
 }

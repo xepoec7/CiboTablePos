@@ -41,7 +41,7 @@ const OrderScreen = ({route, navigation}) => {
     const renderItem = ({item}) => (
         <ListItem
             title={item.product}
-            description={item.qty + ' X '+ item.sum + ' €'}
+            description={"X " + item.qty}
         />
     );
 
